@@ -1,2 +1,2 @@
 # ImGui-Desktop-Template
-A template for a c++ desktop application using imgui made with cross-platform in mind. 
+Custom SDL+ImGui Cross-Platform Desktop Application Template/Library for easy start-up of future projects. 
