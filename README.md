@@ -2,7 +2,7 @@
 Custom SDL+ImGui Cross-Platform Desktop Application Template/Library for easy start-up of future projects. 
 
 ## Usage
-```
+```cpp
 #include "../EsdCppApp.h"
 
 #define WIDTH 1280
