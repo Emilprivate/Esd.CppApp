@@ -1,4 +1,4 @@
-# ImGui-Desktop-Template
+# Esd.CppApp
 Custom SDL+ImGui Cross-Platform Desktop Application Template/Library for easy start-up of future projects. 
 
 ## Usage
