@@ -127,12 +127,12 @@ And then you can use the classes and functions as demonstrated in the Example.cp
 ### On Unix (Linux, macOS, etc.):
 
 ```sh
-./build.sh
+./build_lib.sh
 ```
 
 ### On Windows:
 ````
-build.bat
+build_lib.bat
 ````
 
 ## To Generate IDE Project Files:
