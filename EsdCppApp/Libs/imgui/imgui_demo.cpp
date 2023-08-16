@@ -54,14 +54,14 @@ Index of this file:
 
 // [SECTION] Forward Declarations
 // [SECTION] Helpers
-// [SECTION] Demo Window / ShowDemoWindow()
+// [SECTION] Demo EsdWindow / ShowDemoWindow()
 // - ShowDemoWindow()
 // - sub section: ShowDemoWindowWidgets()
 // - sub section: ShowDemoWindowLayout()
 // - sub section: ShowDemoWindowPopups()
 // - sub section: ShowDemoWindowTables()
 // - sub section: ShowDemoWindowInputs()
-// [SECTION] About Window / ShowAboutWindow()
+// [SECTION] About EsdWindow / ShowAboutWindow()
 // [SECTION] Style Editor / ShowStyleEditor()
 // [SECTION] User Guide / ShowUserGuide()
 // [SECTION] Example App: Main Menu Bar / ShowExampleAppMainMenuBar()
@@ -241,7 +241,7 @@ void*                               GImGuiDemoMarkerCallbackUserData = NULL;
 #define IMGUI_DEMO_MARKER(section)  do { if (GImGuiDemoMarkerCallback != NULL) GImGuiDemoMarkerCallback(__FILE__, __LINE__, section, GImGuiDemoMarkerCallbackUserData); } while (0)
 
 //-----------------------------------------------------------------------------
-// [SECTION] Demo Window / ShowDemoWindow()
+// [SECTION] Demo EsdWindow / ShowDemoWindow()
 //-----------------------------------------------------------------------------
 // - ShowDemoWindow()
 // - ShowDemoWindowWidgets()
@@ -583,8 +583,8 @@ void ImGui::ShowDemoWindow(bool* p_open)
         }
     }
 
-    IMGUI_DEMO_MARKER("Window options");
-    if (ImGui::CollapsingHeader("Window options"))
+    IMGUI_DEMO_MARKER("EsdWindow options");
+    if (ImGui::CollapsingHeader("EsdWindow options"))
     {
         if (ImGui::BeginTable("split", 3))
         {
@@ -2572,8 +2572,8 @@ static void ShowDemoWindowWidgets()
         ImGui::TreePop();
     }
 
-    IMGUI_DEMO_MARKER("Widgets/Querying Window Status (Focused,Hovered etc.)");
-    if (ImGui::TreeNode("Querying Window Status (Focused/Hovered etc.)"))
+    IMGUI_DEMO_MARKER("Widgets/Querying EsdWindow Status (Focused,Hovered etc.)");
+    if (ImGui::TreeNode("Querying EsdWindow Status (Focused/Hovered etc.)"))
     {
         static bool embed_all_inside_a_child_window = false;
         ImGui::Checkbox("Embed everything inside a child window for testing _RootWindow flag.", &embed_all_inside_a_child_window);
@@ -3636,7 +3636,7 @@ static void ShowDemoWindowPopups()
     IMGUI_DEMO_MARKER("Popups/Context menus");
     if (ImGui::TreeNode("Context menus"))
     {
-        HelpMarker("\"Context\" functions are simple helpers to associate a Popup to a given Item or Window identifier.");
+        HelpMarker("\"Context\" functions are simple helpers to associate a Popup to a given Item or EsdWindow identifier.");
 
         // BeginPopupContextItem() is a helper to provide common/simple popup behavior of essentially doing:
         //     if (id == 0)
@@ -6106,7 +6106,7 @@ static void ShowDemoWindowInputs()
 }
 
 //-----------------------------------------------------------------------------
-// [SECTION] About Window / ShowAboutWindow()
+// [SECTION] About EsdWindow / ShowAboutWindow()
 // Access from Dear ImGui Demo -> Tools -> About
 //-----------------------------------------------------------------------------
 
@@ -7508,7 +7508,7 @@ static void ShowExampleAppAutoResize(bool* p_open)
 
     static int lines = 10;
     ImGui::TextUnformatted(
-        "Window will resize every-frame to the size of its content.\n"
+        "EsdWindow will resize every-frame to the size of its content.\n"
         "Note that you probably don't want to query the window size to\n"
         "output your content because that would create a feedback loop.");
     ImGui::SliderInt("Number of lines", &lines, 1, 20);
@@ -7596,7 +7596,7 @@ static void ShowExampleAppConstrainedResize(bool* p_open)
             ImGui::SetNextItemWidth(ImGui::GetFontSize() * 20);
             ImGui::DragInt("Lines", &display_lines, 0.2f, 1, 100);
             ImGui::Checkbox("Auto-resize", &auto_resize);
-            ImGui::Checkbox("Window padding", &window_padding);
+            ImGui::Checkbox("EsdWindow padding", &window_padding);
             for (int i = 0; i < display_lines; i++)
                 ImGui::Text("%*sHello, sailor! Making this line long enough for the example.", i * 4, "");
         }
@@ -7698,7 +7698,7 @@ static void ShowExampleAppFullscreen(bool* p_open)
 }
 
 //-----------------------------------------------------------------------------
-// [SECTION] Example App: Manipulating Window Titles / ShowExampleAppWindowTitles()
+// [SECTION] Example App: Manipulating EsdWindow Titles / ShowExampleAppWindowTitles()
 //-----------------------------------------------------------------------------
 
 // Demonstrate the use of "##" and "###" in identifiers to manipulate ID generation.
@@ -8305,7 +8305,7 @@ void ShowExampleAppDocuments(bool* p_open)
         ImGui::PopID();
     }
     ImGui::PushItemWidth(ImGui::GetFontSize() * 12);
-    ImGui::Combo("Output", (int*)&opt_target, "None\0TabBar+Tabs\0DockSpace+Window\0");
+    ImGui::Combo("Output", (int*)&opt_target, "None\0TabBar+Tabs\0DockSpace+EsdWindow\0");
     ImGui::PopItemWidth();
     bool redock_all = false;
     if (opt_target == Target_Tab)                { ImGui::SameLine(); ImGui::Checkbox("Reorderable Tabs", &opt_reorderable); }

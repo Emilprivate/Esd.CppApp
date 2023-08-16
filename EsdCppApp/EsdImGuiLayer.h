@@ -4,14 +4,14 @@
 
 namespace EsdCppApp
 {
-    // The ImGuiLayer class encapsulates the functionality to handle ImGui rendering.
-    class ImGuiLayer {
+    // The EsdImGuiLayer class encapsulates the functionality to handle ImGui rendering.
+    class EsdImGuiLayer {
     public:
         // Constructor: Initializes ImGui context and sets up ImGui for SDL2 and OpenGL.
-        ImGuiLayer(SDL_Window* window, SDL_GLContext glContext);
+        EsdImGuiLayer(SDL_Window* window, SDL_GLContext glContext);
 
         // Destructor: Cleans up ImGui context and shutdown ImGui implementations for SDL2 and OpenGL.
-        ~ImGuiLayer();
+        ~EsdImGuiLayer();
 
         // Handles the start of a new ImGui frame, sets up the ImGui context for the frame, and ends the frame after user UI code has run.
         void RunFrame(void(*userAppUI)(), bool& isActive);

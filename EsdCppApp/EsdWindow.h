@@ -4,19 +4,19 @@
 
 namespace EsdCppApp
 {
-    // The Window class encapsulates the SDL_Window and associated SDL_GLContext for OpenGL rendering.
-    class Window {
+    // The EsdWindow class encapsulates the SDL_Window and associated SDL_GLContext for OpenGL rendering.
+    class EsdWindow {
     public:
         // Constructor: Initializes the SDL video subsystem, creates a window, and an OpenGL context.
-        Window(const std::string& title, int width, int height);
+        EsdWindow(const std::string& title, int width, int height);
 
         // Destructor: Cleans up the created SDL_GLContext, SDL_Window, and quits SDL subsystem.
-        ~Window();
+        ~EsdWindow();
 
-        // Returns the SDL_Window instance associated with this Window object.
+        // Returns the SDL_Window instance associated with this EsdWindow object.
         SDL_Window* GetSDLWindow();
 
-        // Returns the SDL_GLContext associated with this Window object.
+        // Returns the SDL_GLContext associated with this EsdWindow object.
         SDL_GLContext GetGLContext();
 
     private:

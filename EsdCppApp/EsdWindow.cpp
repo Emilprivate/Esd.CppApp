@@ -1,11 +1,11 @@
-#include "Window.h"
+#include "EsdWindow.h"
 #include <SDL_opengl.h>
 #include <iostream>
 
 namespace EsdCppApp
 {
     // Implementation of the constructor.
-    Window::Window(const std::string& title, int width, int height) {
+    EsdWindow::EsdWindow(const std::string& title, int width, int height) {
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
             std::cerr << "Error: " << SDL_GetError() << "\n";
             exit(-1);
@@ -42,15 +42,15 @@ namespace EsdCppApp
     }
 
     // Implementation of the destructor.
-    Window::~Window() {
+    EsdWindow::~EsdWindow() {
         SDL_GL_DeleteContext(m_GLContext);
         SDL_DestroyWindow(m_Window);
         SDL_Quit();
     }
 
-    // Returns the SDL_Window instance associated with this Window object.
-    SDL_Window* Window::GetSDLWindow() { return m_Window; }
+    // Returns the SDL_Window instance associated with this EsdWindow object.
+    SDL_Window* EsdWindow::GetSDLWindow() { return m_Window; }
 
-    // Returns the SDL_GLContext associated with this Window object.
-    SDL_GLContext Window::GetGLContext() { return m_GLContext; }
+    // Returns the SDL_GLContext associated with this EsdWindow object.
+    SDL_GLContext EsdWindow::GetGLContext() { return m_GLContext; }
 }

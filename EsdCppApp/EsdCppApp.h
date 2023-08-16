@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
-#include "ImGuiLayer.h"
-#include "EventHandler.h"
+#include "EsdImGuiLayer.h"
+#include "EsdEventHandler.h"
 
 namespace EsdCppApp
 {
@@ -11,13 +11,16 @@ namespace EsdCppApp
         // Initializes application with the given title, width, and height.
         static void StartLayer(const std::string& title, int width, int height);
 
+        // Runs the application layer, which handles events, updates the application state, and renders the application.
+        static void RunLayer(void(*userAppUI)(), bool& isActive);
+
         // Cleans up resources allocated during application start-up.
         static void EndLayer();
 
-        // Gets the ImGuiLayer instance associated with this application.
-        static ImGuiLayer* GetImGuiLayer();
+        // Gets the EsdImGuiLayer instance associated with this application.
+        static EsdImGuiLayer* GetImGuiLayer();
 
-        // Gets the EventHandler instance associated with this application.
-        static EventHandler* GetEventHandler();
+        // Gets the EsdEventHandler instance associated with this application.
+        static EsdEventHandler* GetEventHandler();
     };
 }

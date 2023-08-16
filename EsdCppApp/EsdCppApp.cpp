@@ -1,35 +1,50 @@
 #include "EsdCppApp.h"
-#include "Window.h"
-#include "ImGuiLayer.h"
+#include "EsdWindow.h"
+#include "EsdImGuiLayer.h"
 
 namespace EsdCppApp {
 
-    static Window* appWindow = nullptr;     // The window instance for the application.
-    static ImGuiLayer* imguiLayer = nullptr; // The ImGui layer instance for the application.
-    static EventHandler* eventHandler = nullptr; // The event handler instance for the application.
+    static EsdWindow* appWindow = nullptr;     // The window instance for the application.
+    static EsdImGuiLayer* imguiLayer = nullptr; // The ImGui layer instance for the application.
+    static EsdEventHandler* eventHandler = nullptr; // The event handler instance for the application.
 
-    // Initializes the application layer with a new Window and ImGuiLayer.
+    // Initializes the application layer with a new EsdWindow and EsdImGuiLayer.
     void EsdApp::StartLayer(const std::string& title, int width, int height)
     {
-        appWindow = new Window(title, width, height);
-        imguiLayer = new ImGuiLayer(appWindow->GetSDLWindow(), appWindow->GetGLContext());
+        appWindow = new EsdWindow(title, width, height);
+        imguiLayer = new EsdImGuiLayer(appWindow->GetSDLWindow(), appWindow->GetGLContext());
     }
 
-    // Cleans up the ImGuiLayer and Window instances created during StartLayer.
+    // Runs the application layer, which handles events, updates the application state, and renders the application.
+    void EsdApp::RunLayer(void (*userAppUI)(), bool &isActive)
+    {
+        // Main loop: continue to run the application as long as 'running' is true.
+        while (isActive) {
+            // Poll and handle events from the event queue.
+            // Update the 'running' flag based on the events (e.g., exit when a quit event is detected).
+            EsdApp::GetEventHandler()->HandleEvent(isActive);
+
+            // Run an ImGui frame by calling the lambda function 'myApp' which is passed as an argument,
+            // and also pass the 'running' flag to allow the GUI layer to potentially modify the application's running state.
+            EsdApp::GetImGuiLayer()->RunFrame(userAppUI, isActive);
+        }
+    }
+
+    // Cleans up the EsdImGuiLayer and EsdWindow instances created during StartLayer.
     void EsdApp::EndLayer()
     {
         delete imguiLayer;
         delete appWindow;
     }
 
-    // Returns the ImGuiLayer instance associated with this application.
-    ImGuiLayer* EsdApp::GetImGuiLayer()
+    // Returns the EsdImGuiLayer instance associated with this application.
+    EsdImGuiLayer* EsdApp::GetImGuiLayer()
     {
         return imguiLayer;
     }
 
-    // Returns the EventHandler instance associated with this application.
-    EventHandler* EsdApp::GetEventHandler()
+    // Returns the EsdEventHandler instance associated with this application.
+    EsdEventHandler* EsdApp::GetEventHandler()
     {
         return eventHandler;
     }

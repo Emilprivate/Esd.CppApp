@@ -1,4 +1,4 @@
-#include "ImGuiLayer.h"
+#include "EsdImGuiLayer.h"
 #include <imgui_impl_sdl2.h>
 #include <imgui_impl_opengl2.h>
 #include <SDL_opengl.h>
@@ -7,7 +7,7 @@
 namespace EsdCppApp
 {
     // Implementation of the constructor.
-    ImGuiLayer::ImGuiLayer(SDL_Window* window, SDL_GLContext glContext)
+    EsdImGuiLayer::EsdImGuiLayer(SDL_Window* window, SDL_GLContext glContext)
             : m_Window(window), m_GLContext(glContext){
 
         IMGUI_CHECKVERSION();
@@ -21,11 +21,11 @@ namespace EsdCppApp
         ImGui_ImplSDL2_InitForOpenGL(m_Window, m_GLContext);
         ImGui_ImplOpenGL2_Init();
 
-        std::cout << "ImGuiLayer initialized" << std::endl;
+        std::cout << "EsdImGuiLayer initialized" << std::endl;
     }
 
     // Implementation of the destructor.
-    ImGuiLayer::~ImGuiLayer()
+    EsdImGuiLayer::~EsdImGuiLayer()
     {
         ImGui_ImplOpenGL2_Shutdown();
         ImGui_ImplSDL2_Shutdown();
@@ -33,7 +33,7 @@ namespace EsdCppApp
     }
 
     // Manages the entire lifecycle of an ImGui frame.
-    void ImGuiLayer::RunFrame(void(*userAppUI)(), bool& isActive)
+    void EsdImGuiLayer::RunFrame(void(*userAppUI)(), bool& isActive)
     {
         ImGuiIO& io = ImGui::GetIO();
         ResizeEvent();
@@ -65,7 +65,7 @@ namespace EsdCppApp
     }
 
     // Handles the updating of window size in ImGui when the SDL window is resized.
-    void ImGuiLayer::ResizeEvent() {
+    void EsdImGuiLayer::ResizeEvent() {
         ImGuiIO& io = ImGui::GetIO();
         int width, height;
         SDL_GetWindowSize(m_Window, &width, &height);

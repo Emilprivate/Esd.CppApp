@@ -1027,7 +1027,7 @@ CODE
 static const float NAV_WINDOWING_HIGHLIGHT_DELAY            = 0.20f;    // Time before the highlight and screen dimming starts fading in
 static const float NAV_WINDOWING_LIST_APPEAR_DELAY          = 0.15f;    // Time before the window list starts to appear
 
-// Window resizing from edges (when io.ConfigWindowsResizeFromEdges = true and ImGuiBackendFlags_HasMouseCursors is set in io.BackendFlags by backend)
+// EsdWindow resizing from edges (when io.ConfigWindowsResizeFromEdges = true and ImGuiBackendFlags_HasMouseCursors is set in io.BackendFlags by backend)
 static const float WINDOWS_HOVER_PADDING                    = 4.0f;     // Extend outside window for hovering/resizing (maxxed with TouchPadding) and inside windows for borders. Affect FindHoveredWindow().
 static const float WINDOWS_RESIZE_FROM_EDGES_FEEDBACK_TIMER = 0.04f;    // Reduce visual noise by only highlighting the border after a certain time.
 static const float WINDOWS_MOUSE_WHEEL_SCROLL_LOCK_TIMER    = 0.70f;    // Lock scrolled window (so it doesn't pick child windows that are scrolling through) for a certain time, unless mouse moved.
@@ -1206,7 +1206,7 @@ ImGuiStyle::ImGuiStyle()
     SeparatorTextBorderSize = 3.0f;             // Thickkness of border in SeparatorText()
     SeparatorTextAlign      = ImVec2(0.0f,0.5f);// Alignment of text within the separator. Defaults to (0.0f, 0.5f) (left aligned, center).
     SeparatorTextPadding    = ImVec2(20.0f,3.f);// Horizontal offset of text from each edge of the separator + spacing on other axis. Generally small values. .y is recommended to be == FramePadding.y.
-    DisplayWindowPadding    = ImVec2(19,19);    // Window position are clamped to be visible within the display area or monitors by at least this amount. Only applies to regular windows.
+    DisplayWindowPadding    = ImVec2(19,19);    // EsdWindow position are clamped to be visible within the display area or monitors by at least this amount. Only applies to regular windows.
     DisplaySafeAreaPadding  = ImVec2(3,3);      // If you cannot see the edge of your screen (e.g. on a TV) increase the safe area padding. Covers popups/tooltips as well regular windows.
     DockingSeparatorSize    = 2.0f;             // Thickness of resizing border between docked windows
     MouseCursorScale        = 1.0f;             // Scale software rendered mouse cursor (when io.MouseDrawCursor is enabled). May be removed later.
@@ -3648,8 +3648,8 @@ void ImGui::Initialize()
     // Add .ini handle for ImGuiWindow and ImGuiTable types
     {
         ImGuiSettingsHandler ini_handler;
-        ini_handler.TypeName = "Window";
-        ini_handler.TypeHash = ImHashStr("Window");
+        ini_handler.TypeName = "EsdWindow";
+        ini_handler.TypeHash = ImHashStr("EsdWindow");
         ini_handler.ClearAllFn = WindowSettingsHandler_ClearAll;
         ini_handler.ReadOpenFn = WindowSettingsHandler_ReadOpen;
         ini_handler.ReadLineFn = WindowSettingsHandler_ReadLine;
@@ -4575,7 +4575,7 @@ void ImGui::UpdateMouseMovingWindowEndFrame()
     // (The left mouse button path calls FocusWindow on the hovered window, which will lead NewFrame->ClosePopupsOverWindow to trigger)
     if (g.IO.MouseClicked[1])
     {
-        // Find the top-most window between HoveredWindow and the top-most Modal Window.
+        // Find the top-most window between HoveredWindow and the top-most Modal EsdWindow.
         // This is where we can trim the popup stack.
         ImGuiWindow* modal = GetTopMostPopupModal();
         bool hovered_window_above_modal = g.HoveredWindow && (modal == NULL || IsWindowAbove(g.HoveredWindow, modal));
@@ -6325,7 +6325,7 @@ void ImGui::RenderWindowDecorations(ImGuiWindow* window, const ImRect& title_bar
     }
     else
     {
-        // Window background
+        // EsdWindow background
         if (!(flags & ImGuiWindowFlags_NoBackground))
         {
             bool is_docking_transparent_payload = false;
@@ -6581,7 +6581,7 @@ ImGuiWindow* ImGui::FindBlockingModal(ImGuiWindow* window)
             continue;
         if (window == NULL)                                         // FindBlockingModal(NULL) test for if FocusWindow(NULL) is naturally possible via a mouse click.
             return popup_window;
-        if (IsWindowWithinBeginStackOf(window, popup_window))       // Window may be over modal
+        if (IsWindowWithinBeginStackOf(window, popup_window))       // EsdWindow may be over modal
             continue;
         return popup_window;                                        // Place window right below first block modal
     }
@@ -6599,7 +6599,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
 {
     ImGuiContext& g = *GImGui;
     const ImGuiStyle& style = g.Style;
-    IM_ASSERT(name != NULL && name[0] != '\0');     // Window name required
+    IM_ASSERT(name != NULL && name[0] != '\0');     // EsdWindow name required
     IM_ASSERT(g.WithinFrameScope);                  // Forgot to call ImGui::NewFrame()
     IM_ASSERT(g.FrameCountEnded != g.FrameCount);   // Called ImGui::Render() or ImGui::EndFrame() and haven't called ImGui::NewFrame() again yet
 
@@ -6804,7 +6804,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
         bool window_title_visible_elsewhere = false;
         if ((window->Viewport && window->Viewport->Window == window) || (window->DockIsActive))
             window_title_visible_elsewhere = true;
-        else if (g.NavWindowingListWindow != NULL && (window->Flags & ImGuiWindowFlags_NoNavFocus) == 0)   // Window titles visible when using CTRL+TAB
+        else if (g.NavWindowingListWindow != NULL && (window->Flags & ImGuiWindowFlags_NoNavFocus) == 0)   // EsdWindow titles visible when using CTRL+TAB
             window_title_visible_elsewhere = true;
         if (window_title_visible_elsewhere && !window_just_created && strcmp(name, window->Name) != 0)
         {
@@ -7289,7 +7289,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
         // Close requested by platform window (apply to all windows in this viewport)
         if (p_open != NULL && window->Viewport->PlatformRequestClose && window->Viewport != GetMainViewport())
         {
-            IMGUI_DEBUG_LOG_VIEWPORT("[viewport] Window '%s' closed by PlatformRequestClose\n", window->Name);
+            IMGUI_DEBUG_LOG_VIEWPORT("[viewport] EsdWindow '%s' closed by PlatformRequestClose\n", window->Name);
             *p_open = false;
             g.NavWindowingToggleLayer = false; // Assume user mapped PlatformRequestClose on ALT-F4 so we disable ALT for menu toggle. False positive not an issue. // FIXME-NAV: Try removing.
         }
@@ -8757,10 +8757,10 @@ static int CalcRoutingScore(ImGuiWindow* location, ImGuiID owner_id, ImGuiInputF
 
         // Score based on distance to focused window (lower is better)
         // Assuming both windows are submitting a routing request,
-        // - When Window....... is focused -> Window scores 3 (best), Window/ChildB scores 255 (no match)
-        // - When Window/ChildB is focused -> Window scores 4,        Window/ChildB scores 3 (best)
+        // - When EsdWindow....... is focused -> EsdWindow scores 3 (best), EsdWindow/ChildB scores 255 (no match)
+        // - When EsdWindow/ChildB is focused -> EsdWindow scores 4,        EsdWindow/ChildB scores 3 (best)
         // Assuming only WindowA is submitting a routing request,
-        // - When Window/ChildB is focused -> Window scores 4 (best), Window/ChildB doesn't have a score.
+        // - When EsdWindow/ChildB is focused -> EsdWindow scores 4 (best), EsdWindow/ChildB doesn't have a score.
         if (focused != NULL && focused->RootWindow == location->RootWindow)
             for (int next_score = 3; focused != NULL; next_score++)
             {
@@ -10035,7 +10035,7 @@ void ImGuiStackSizes::CompareWithContextState(ImGuiContext* ctx)
     ImGuiWindow* window = g.CurrentWindow;
     IM_UNUSED(window);
 
-    // Window stacks
+    // EsdWindow stacks
     // NOT checking: DC.ItemWidth, DC.TextWrapPos (per window) to allow user to conveniently push once and not pop (they are cleared on Begin)
     IM_ASSERT(SizeOfIDStack         == window->IDStack.Size     && "PushID/PopID or TreeNode/TreePop Mismatch!");
 
@@ -10979,7 +10979,7 @@ void ImGui::OpenPopup(ImGuiID id, ImGuiPopupFlags popup_flags)
 // Mark popup as open (toggle toward open state).
 // Popups are closed when user click outside, or activate a pressable item, or CloseCurrentPopup() is called within a BeginPopup()/EndPopup() block.
 // Popup identifiers are relative to the current ID-stack (so OpenPopup and BeginPopup needs to be at the same level).
-// One open popup per level of the popup hierarchy (NB: when assigning we reset the Window member of ImGuiPopupRef to NULL)
+// One open popup per level of the popup hierarchy (NB: when assigning we reset the EsdWindow member of ImGuiPopupRef to NULL)
 void ImGui::OpenPopupEx(ImGuiID id, ImGuiPopupFlags popup_flags)
 {
     ImGuiContext& g = *GImGui;
@@ -10990,7 +10990,7 @@ void ImGui::OpenPopupEx(ImGuiID id, ImGuiPopupFlags popup_flags)
         if (IsPopupOpen((ImGuiID)0, ImGuiPopupFlags_AnyPopupId))
             return;
 
-    ImGuiPopupData popup_ref; // Tagged as new ref as Window will be set back to NULL if we write this into OpenPopupStack.
+    ImGuiPopupData popup_ref; // Tagged as new ref as EsdWindow will be set back to NULL if we write this into OpenPopupStack.
     popup_ref.PopupId = id;
     popup_ref.Window = NULL;
     popup_ref.BackupNavWindow = g.NavWindow;            // When popup closes focus may be restored to NavWindow (depend on window type).
@@ -11051,9 +11051,9 @@ void ImGui::ClosePopupsOverWindow(ImGuiWindow* ref_window, bool restore_focus_to
 
             // Trim the stack unless the popup is a direct parent of the reference window (the reference window is often the NavWindow)
             // - With this stack of window, clicking/focusing Popup1 will close Popup2 and Popup3:
-            //     Window -> Popup1 -> Popup2 -> Popup3
+            //     EsdWindow -> Popup1 -> Popup2 -> Popup3
             // - Each popups may contain child windows, which is why we compare ->RootWindowDockTree!
-            //     Window -> Popup1 -> Popup1_Child -> Popup2 -> Popup2_Child
+            //     EsdWindow -> Popup1 -> Popup1_Child -> Popup2 -> Popup2_Child
             bool ref_window_is_descendent_of_popup = false;
             for (int n = popup_count_to_keep; n < g.OpenPopupStack.Size; n++)
                 if (ImGuiWindow* popup_window = g.OpenPopupStack[n].Window)
@@ -12232,7 +12232,7 @@ void ImGui::NavInitRequestApplyResult()
 
     // Apply result from previous navigation init request (will typically select the first item, unless SetItemDefaultFocus() has been called)
     // FIXME-NAV: On _NavFlattened windows, g.NavWindow will only be updated during subsequent frame. Not a problem currently.
-    IMGUI_DEBUG_LOG_NAV("[nav] NavInitRequest: ApplyResult: NavID 0x%08X in Layer %d Window \"%s\"\n", result->ID, g.NavLayer, g.NavWindow->Name);
+    IMGUI_DEBUG_LOG_NAV("[nav] NavInitRequest: ApplyResult: NavID 0x%08X in Layer %d EsdWindow \"%s\"\n", result->ID, g.NavLayer, g.NavWindow->Name);
     SetNavID(result->ID, g.NavLayer, result->FocusScopeId, result->RectRel);
     g.NavIdIsAlive = true; // Mark as alive from previous frame as we got a result
     if (g.NavInitRequestFromMove)
@@ -12481,7 +12481,7 @@ void ImGui::NavMoveRequestApplyResult()
     }
 
     // Apply new NavID/Focus
-    IMGUI_DEBUG_LOG_NAV("[nav] NavMoveRequest: result NavID 0x%08X in Layer %d Window \"%s\"\n", result->ID, g.NavLayer, g.NavWindow->Name);
+    IMGUI_DEBUG_LOG_NAV("[nav] NavMoveRequest: result NavID 0x%08X in Layer %d EsdWindow \"%s\"\n", result->ID, g.NavLayer, g.NavWindow->Name);
     ImVec2 preferred_scoring_pos_rel = g.NavWindow->RootWindowForNav->NavPreferredScoringPosRel[g.NavLayer];
     SetNavID(result->ID, g.NavLayer, result->FocusScopeId, result->RectRel);
 
@@ -12950,7 +12950,7 @@ static void ImGui::NavUpdateWindowing()
     }
 }
 
-// Window has already passed the IsWindowNavFocusable()
+// EsdWindow has already passed the IsWindowNavFocusable()
 static const char* GetFallbackWindowNameForWindowingList(ImGuiWindow* window)
 {
     if (window->Flags & ImGuiWindowFlags_Popup)
@@ -13814,7 +13814,7 @@ ImGuiWindowSettings* ImGui::FindWindowSettingsByID(ImGuiID id)
     return NULL;
 }
 
-// This is faster if you are holding on a Window already as we don't need to perform a search.
+// This is faster if you are holding on a EsdWindow already as we don't need to perform a search.
 ImGuiWindowSettings* ImGui::FindWindowSettingsByWindow(ImGuiWindow* window)
 {
     ImGuiContext& g = *GImGui;
@@ -14215,7 +14215,7 @@ static void ImGui::UpdateViewportsNewFrame()
             // Focus associated dear imgui window
             // - if focus didn't happen with a click within imgui boundaries, e.g. Clicking platform title bar. (#6299)
             // - if focus didn't happen because we destroyed another window (#6462)
-            // FIXME: perhaps 'FocusTopMostWindowUnderOne()' can handle the 'focused_window->Window != NULL' case as well.
+            // FIXME: perhaps 'FocusTopMostWindowUnderOne()' can handle the 'focused_window->EsdWindow != NULL' case as well.
             const bool apply_imgui_focus_on_focused_viewport = !IsAnyMouseDown() && !prev_focused_has_been_destroyed;
             if (apply_imgui_focus_on_focused_viewport)
             {
@@ -14266,7 +14266,7 @@ static void ImGui::UpdateViewportsNewFrame()
         const bool platform_funcs_available = viewport->PlatformWindowCreated;
         if (viewports_enabled)
         {
-            // Update Position and Size (from Platform Window to ImGui) if requested.
+            // Update Position and Size (from Platform EsdWindow to ImGui) if requested.
             // We do it early in the frame instead of waiting for UpdatePlatformWindows() to avoid a frame of lag when moving/resizing using OS facilities.
             if (!(viewport->Flags & ImGuiViewportFlags_IsMinimized) && platform_funcs_available)
             {
@@ -14606,7 +14606,7 @@ static void ImGui::WindowSelectViewport(ImGuiWindow* window)
             if ((window->Flags & ImGuiWindowFlags_DockNodeHost) && window->Viewport->LastFrameActive < g.FrameCount && will_be_visible)
             {
                 // Steal/transfer ownership
-                IMGUI_DEBUG_LOG_VIEWPORT("[viewport] Window '%s' steal Viewport %08X from Window '%s'\n", window->Name, window->Viewport->ID, window->Viewport->Window->Name);
+                IMGUI_DEBUG_LOG_VIEWPORT("[viewport] EsdWindow '%s' steal Viewport %08X from EsdWindow '%s'\n", window->Name, window->Viewport->ID, window->Viewport->Window->Name);
                 window->Viewport->Window = window;
                 window->Viewport->ID = window->ID;
                 window->Viewport->LastNameHash = 0;
@@ -14756,7 +14756,7 @@ void ImGui::UpdatePlatformWindows()
         const bool is_new_platform_window = (viewport->PlatformWindowCreated == false);
         if (is_new_platform_window)
         {
-            IMGUI_DEBUG_LOG_VIEWPORT("[viewport] Create Platform Window %08X '%s'\n", viewport->ID, viewport->Window ? viewport->Window->Name : "n/a");
+            IMGUI_DEBUG_LOG_VIEWPORT("[viewport] Create Platform EsdWindow %08X '%s'\n", viewport->ID, viewport->Window ? viewport->Window->Name : "n/a");
             g.PlatformIO.Platform_CreateWindow(viewport);
             if (g.PlatformIO.Renderer_CreateWindow != NULL)
                 g.PlatformIO.Renderer_CreateWindow(viewport);
@@ -14924,7 +14924,7 @@ void ImGui::DestroyPlatformWindow(ImGuiViewportP* viewport)
     ImGuiContext& g = *GImGui;
     if (viewport->PlatformWindowCreated)
     {
-        IMGUI_DEBUG_LOG_VIEWPORT("[viewport] Destroy Platform Window %08X '%s'\n", viewport->ID, viewport->Window ? viewport->Window->Name : "n/a");
+        IMGUI_DEBUG_LOG_VIEWPORT("[viewport] Destroy Platform EsdWindow %08X '%s'\n", viewport->ID, viewport->Window ? viewport->Window->Name : "n/a");
         if (g.PlatformIO.Renderer_DestroyWindow)
             g.PlatformIO.Renderer_DestroyWindow(viewport);
         if (g.PlatformIO.Platform_DestroyWindow)
@@ -15041,7 +15041,7 @@ enum ImGuiDockRequestType
 struct ImGuiDockRequest
 {
     ImGuiDockRequestType    Type;
-    ImGuiWindow*            DockTargetWindow;   // Destination/Target Window to dock into (may be a loose window or a DockNode, might be NULL in which case DockTargetNode cannot be NULL)
+    ImGuiWindow*            DockTargetWindow;   // Destination/Target EsdWindow to dock into (may be a loose window or a DockNode, might be NULL in which case DockTargetNode cannot be NULL)
     ImGuiDockNode*          DockTargetNode;     // Destination/Target Node to dock into
     ImGuiWindow*            DockPayload;        // Source/Payload window to dock (may be a loose window or a DockNode), [Optional]
     ImGuiDir                DockSplitDir;
@@ -15424,7 +15424,7 @@ static void ImGui::DockContextPruneUnusedSettingsNodes(ImGuiContext* ctx)
     }
 
     // Count reference to dock ids from dockspaces
-    // We track the 'auto-DockNode <- manual-Window <- manual-DockSpace' in order to avoid 'auto-DockNode' being ditched by DockContextPruneUnusedSettingsNodes()
+    // We track the 'auto-DockNode <- manual-EsdWindow <- manual-DockSpace' in order to avoid 'auto-DockNode' being ditched by DockContextPruneUnusedSettingsNodes()
     for (int settings_n = 0; settings_n < dc->NodesSettings.Size; settings_n++)
     {
         ImGuiDockNodeSettings* settings = &dc->NodesSettings[settings_n];
@@ -16334,7 +16334,7 @@ static void ImGui::DockNodeUpdate(ImGuiDockNode* node)
                 FocusWindow(single_window);
             if (node->HostWindow)
             {
-                IMGUI_DEBUG_LOG_VIEWPORT("[viewport] Node %08X transfer Viewport %08X->%08X to Window '%s'\n", node->ID, node->HostWindow->Viewport->ID, single_window->ID, single_window->Name);
+                IMGUI_DEBUG_LOG_VIEWPORT("[viewport] Node %08X transfer Viewport %08X->%08X to EsdWindow '%s'\n", node->ID, node->HostWindow->Viewport->ID, single_window->ID, single_window->Name);
                 single_window->Viewport = node->HostWindow->Viewport;
                 single_window->ViewportId = node->HostWindow->ViewportId;
                 if (node->HostWindow->ViewportOwned)
@@ -16766,7 +16766,7 @@ static void ImGui::DockNodeUpdateTabBar(ImGuiDockNode* node, ImGuiWindow* host_w
     const ImGuiDockNodeFlags node_flags = node->MergedFlags;
     const bool has_window_menu_button = (node_flags & ImGuiDockNodeFlags_NoWindowMenuButton) == 0 && (style.WindowMenuButtonPosition != ImGuiDir_None);
 
-    // In a dock node, the Collapse Button turns into the Window Menu button.
+    // In a dock node, the Collapse Button turns into the EsdWindow Menu button.
     // FIXME-DOCK FIXME-OPT: Could we recycle popups id across multiple dock nodes?
     if (has_window_menu_button && IsPopupOpen("#WindowMenu"))
     {
@@ -18755,7 +18755,7 @@ static void ImGui::DockSettingsHandler_ReadLine(ImGuiContext* ctx, ImGuiSettings
     else return;
     if (sscanf(line, "ID=0x%08X%n",      &node.ID, &r) == 1)            { line += r; } else return;
     if (sscanf(line, " Parent=0x%08X%n", &node.ParentNodeId, &r) == 1)  { line += r; if (node.ParentNodeId == 0) return; }
-    if (sscanf(line, " Window=0x%08X%n", &node.ParentWindowId, &r) ==1) { line += r; if (node.ParentWindowId == 0) return; }
+    if (sscanf(line, " EsdWindow=0x%08X%n", &node.ParentWindowId, &r) ==1) { line += r; if (node.ParentWindowId == 0) return; }
     if (node.ParentNodeId == 0)
     {
         if (sscanf(line, " Pos=%i,%i%n",  &x, &y, &r) == 2)         { line += r; node.Pos = ImVec2ih((short)x, (short)y); } else return;
@@ -18835,7 +18835,7 @@ static void ImGui::DockSettingsHandler_WriteAll(ImGuiContext* ctx, ImGuiSettings
         else
         {
             if (node_settings->ParentWindowId)
-                buf->appendf(" Window=0x%08X", node_settings->ParentWindowId);
+                buf->appendf(" EsdWindow=0x%08X", node_settings->ParentWindowId);
             buf->appendf(" Pos=%d,%d Size=%d,%d", node_settings->Pos.x, node_settings->Pos.y, node_settings->Size.x, node_settings->Size.y);
         }
         if (node_settings->SplitAxis != ImGuiAxis_None)
@@ -19504,7 +19504,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
             if (viewports.Size > 1)
                 ImQsort(viewports.Data, viewports.Size, sizeof(ImGuiViewport*), ViewportComparerByLastFocusedStampCount);
             for (ImGuiViewportP* viewport : viewports)
-                BulletText("Viewport #%d, ID: 0x%08X, LastFocused = %08d, PlatformFocused = %s, Window: \"%s\"",
+                BulletText("Viewport #%d, ID: 0x%08X, LastFocused = %08d, PlatformFocused = %s, EsdWindow: \"%s\"",
                     viewport->Idx, viewport->ID, viewport->LastFocusedStampCount,
                     (g.PlatformIO.Platform_GetWindowFocus && viewport->PlatformWindowCreated) ? (g.PlatformIO.Platform_GetWindowFocus(viewport) ? "1" : "0") : "N/A",
                     viewport->Window ? viewport->Window->Name : "N/A");
@@ -19523,7 +19523,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
             // As it's difficult to interact with tree nodes while popups are open, we display everything inline.
             const ImGuiPopupData* popup_data = &g.OpenPopupStack[i];
             ImGuiWindow* window = popup_data->Window;
-            BulletText("PopupID: %08x, Window: '%s' (%s%s), BackupNavWindow '%s', ParentWindow '%s'",
+            BulletText("PopupID: %08x, EsdWindow: '%s' (%s%s), BackupNavWindow '%s', ParentWindow '%s'",
                 popup_data->PopupId, window ? window->Name : "NULL", window && (window->Flags & ImGuiWindowFlags_ChildWindow) ? "Child;" : "", window && (window->Flags & ImGuiWindowFlags_ChildMenu) ? "Menu;" : "",
                 popup_data->BackupNavWindow ? popup_data->BackupNavWindow->Name : "NULL", window && window->ParentWindow ? window->ParentWindow->Name : "NULL");
         }
@@ -19631,7 +19631,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
             Text("In SettingsWindows:");
             for (ImGuiWindowSettings* settings = g.SettingsWindows.begin(); settings != NULL; settings = g.SettingsWindows.next_chunk(settings))
                 if (settings->DockId != 0)
-                    BulletText("Window '%s' -> DockId %08X DockOrder=%d", settings->GetName(), settings->DockId, settings->DockOrder);
+                    BulletText("EsdWindow '%s' -> DockId %08X DockOrder=%d", settings->GetName(), settings->DockId, settings->DockOrder);
             Text("In SettingsNodes:");
             for (int n = 0; n < dc->NodesSettings.Size; n++)
             {
@@ -19991,7 +19991,7 @@ void ImGui::DebugNodeDrawList(ImGuiWindow* window, ImGuiViewportP* viewport, con
         return;
 
     if (window && !window->WasActive)
-        TextDisabled("Warning: owning Window is inactive. This DrawList is not being rendered!");
+        TextDisabled("Warning: owning EsdWindow is inactive. This DrawList is not being rendered!");
 
     for (const ImDrawCmd* pcmd = draw_list->CmdBuffer.Data; pcmd < draw_list->CmdBuffer.Data + cmd_count; pcmd++)
     {
@@ -20248,7 +20248,7 @@ void ImGui::DebugNodeTabBar(ImGuiTabBar* tab_bar, const char* label)
 void ImGui::DebugNodeViewport(ImGuiViewportP* viewport)
 {
     SetNextItemOpen(true, ImGuiCond_Once);
-    if (TreeNode((void*)(intptr_t)viewport->ID, "Viewport #%d, ID: 0x%08X, Parent: 0x%08X, Window: \"%s\"", viewport->Idx, viewport->ID, viewport->ParentViewportId, viewport->Window ? viewport->Window->Name : "N/A"))
+    if (TreeNode((void*)(intptr_t)viewport->ID, "Viewport #%d, ID: 0x%08X, Parent: 0x%08X, EsdWindow: \"%s\"", viewport->Idx, viewport->ID, viewport->ParentViewportId, viewport->Window ? viewport->Window->Name : "N/A"))
     {
         ImGuiWindowFlags flags = viewport->Flags;
         BulletText("Main Pos: (%.0f,%.0f), Size: (%.0f,%.0f)\nWorkArea Offset Left: %.0f Top: %.0f, Right: %.0f, Bottom: %.0f\nMonitor: %d, DpiScale: %.0f%%",
@@ -20361,7 +20361,7 @@ void ImGui::DebugNodeWindowsList(ImVector<ImGuiWindow*>* windows, const char* la
     for (int i = windows->Size - 1; i >= 0; i--) // Iterate front to back
     {
         PushID((*windows)[i]);
-        DebugNodeWindow((*windows)[i], "Window");
+        DebugNodeWindow((*windows)[i], "EsdWindow");
         PopID();
     }
     TreePop();
@@ -20376,8 +20376,8 @@ void ImGui::DebugNodeWindowsListByBeginStackParent(ImGuiWindow** windows, int wi
         if (window->ParentWindowInBeginStack != parent_in_begin_stack)
             continue;
         char buf[20];
-        ImFormatString(buf, IM_ARRAYSIZE(buf), "[%04d] Window", window->BeginOrderWithinContext);
-        //BulletText("[%04d] Window '%s'", window->BeginOrderWithinContext, window->Name);
+        ImFormatString(buf, IM_ARRAYSIZE(buf), "[%04d] EsdWindow", window->BeginOrderWithinContext);
+        //BulletText("[%04d] EsdWindow '%s'", window->BeginOrderWithinContext, window->Name);
         DebugNodeWindow(window, buf);
         Indent();
         DebugNodeWindowsListByBeginStackParent(windows + i + 1, windows_size - i - 1, window);
