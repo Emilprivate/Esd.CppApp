@@ -1,6 +1,7 @@
 # ImGui-Desktop-Template
-![](https://github.com/Emilprivate/Esd.CppApp/blob/main/Res/Logo_wide.png)
 Custom SDL+ImGui Cross-Platform Desktop Application Template/Library for easy start-up of future projects.
+
+![](https://github.com/Emilprivate/Esd.CppApp/blob/main/Res/Logo_wide.png)
 
 ## Usage
 ```cpp
