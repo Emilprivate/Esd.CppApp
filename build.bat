@@ -12,7 +12,7 @@ REM Navigate to the build directory
 cd build
 
 REM Run CMake to configure the project
-cmake ..
+cmake -DSDL2_DIR=C:\SDL2\cmake ..
 
 REM Run MSBuild to build the project
 MSBuild EsdCppApp.vcxproj
