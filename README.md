@@ -52,7 +52,7 @@ Install CMake from https://cmake.org/download/
 brew install sdl2
 ```
 #### Windows:
-1. Download SDL2 from https://libsdl.org/download-2.0.php, place SDL2 in your C:\ folder or change the directory in the build.bat file for a custom location.
+1. Download SDL2 from https://libsdl.org/download-2.0.php, place SDL2 in your C:\ folder or change the directory in the build.bat/generate files for a custom location.
 
 #### Linux:
 ```bash
