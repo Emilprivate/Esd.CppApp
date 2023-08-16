@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <imgui.h>
+#include <string>
 
 namespace EsdCppApp
 {
@@ -8,7 +9,7 @@ namespace EsdCppApp
     class EsdImGuiLayer {
     public:
         // Constructor: Initializes ImGui context and sets up ImGui for SDL2 and OpenGL.
-        EsdImGuiLayer(SDL_Window* window, SDL_GLContext glContext);
+        EsdImGuiLayer(const char* title, const float w, const float h, SDL_Window* window, SDL_GLContext glContext);
 
         // Destructor: Cleans up ImGui context and shutdown ImGui implementations for SDL2 and OpenGL.
         ~EsdImGuiLayer();
@@ -22,5 +23,11 @@ namespace EsdCppApp
     private:
         SDL_Window* m_Window;     // The SDL window that ImGui will render to.
         SDL_GLContext m_GLContext; // The OpenGL context associated with the SDL window.
+        const float width;
+        const float height;
+        const char* title;
+
+        // Custom ImGui style.
+        void DefaultEsdStyle();
     };
 }

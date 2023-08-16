@@ -1,5 +1,5 @@
 # Esd.CppApp
-Custom SDL+ImGui Cross-Platform Desktop Application Template/Library for easy start-up of future projects.
+Custom SDL+ImGui Cross-Platform Desktop Application Template/Library for easy start-up of future projects. This template also makes the SDL window invisible to the user, so that the user can focus on the ImGui user interface elements.
 
 ![](https://github.com/Emilprivate/Esd.CppApp/blob/main/Logo.png)
 

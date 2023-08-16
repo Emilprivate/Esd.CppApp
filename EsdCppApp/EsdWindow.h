@@ -8,7 +8,7 @@ namespace EsdCppApp
     class EsdWindow {
     public:
         // Constructor: Initializes the SDL video subsystem, creates a window, and an OpenGL context.
-        EsdWindow(const std::string& title, int width, int height);
+        EsdWindow();
 
         // Destructor: Cleans up the created SDL_GLContext, SDL_Window, and quits SDL subsystem.
         ~EsdWindow();

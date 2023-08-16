@@ -9,7 +9,7 @@ namespace EsdCppApp
     class EsdApp {
     public:
         // Initializes application with the given title, width, and height.
-        static void StartLayer(const std::string& title, int width, int height);
+        static void StartLayer(const char* title, const float width, const float height);
 
         // Runs the application layer, which handles events, updates the application state, and renders the application.
         static void RunLayer(void(*userAppUI)(), bool& isActive);

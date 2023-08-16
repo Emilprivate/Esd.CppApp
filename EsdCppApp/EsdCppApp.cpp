@@ -9,10 +9,10 @@ namespace EsdCppApp {
     static EsdEventHandler* eventHandler = nullptr; // The event handler instance for the application.
 
     // Initializes the application layer with a new EsdWindow and EsdImGuiLayer.
-    void EsdApp::StartLayer(const std::string& title, int width, int height)
+    void EsdApp::StartLayer(const char* title, const float width, const float height)
     {
-        appWindow = new EsdWindow(title, width, height);
-        imguiLayer = new EsdImGuiLayer(appWindow->GetSDLWindow(), appWindow->GetGLContext());
+        appWindow = new EsdWindow();
+        imguiLayer = new EsdImGuiLayer(title, width, height, appWindow->GetSDLWindow(), appWindow->GetGLContext());
     }
 
     // Runs the application layer, which handles events, updates the application state, and renders the application.
