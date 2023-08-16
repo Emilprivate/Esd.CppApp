@@ -2,14 +2,16 @@
 #include <SDL_opengl.h>
 #include <iostream>
 
-namespace EsdCppApp {
-
+namespace EsdCppApp
+{
+    // Implementation of the constructor.
     Window::Window(const std::string& title, int width, int height) {
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
             std::cerr << "Error: " << SDL_GetError() << "\n";
             exit(-1);
         }
 
+        // Use OpenGL 2.1
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
@@ -18,14 +20,20 @@ namespace EsdCppApp {
                                     width, height,
                                     SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
-        if (m_Window == NULL) {
+        // Check that the window was successfully created
+        if (m_Window == NULL)
+        {
             std::cerr << "Error: " << SDL_GetError() << "\n";
             SDL_Quit();
             exit(-1);
         }
 
+        // Create an OpenGL context associated with the window.
         m_GLContext = SDL_GL_CreateContext(m_Window);
-        if (m_GLContext == NULL) {
+
+        // Check that the OpenGL context was successfully created
+        if (m_GLContext == NULL)
+        {
             std::cerr << "Error: " << SDL_GetError() << "\n";
             SDL_DestroyWindow(m_Window);
             SDL_Quit();
@@ -33,12 +41,16 @@ namespace EsdCppApp {
         }
     }
 
+    // Implementation of the destructor.
     Window::~Window() {
         SDL_GL_DeleteContext(m_GLContext);
         SDL_DestroyWindow(m_Window);
         SDL_Quit();
     }
 
+    // Returns the SDL_Window instance associated with this Window object.
     SDL_Window* Window::GetSDLWindow() { return m_Window; }
+
+    // Returns the SDL_GLContext associated with this Window object.
     SDL_GLContext Window::GetGLContext() { return m_GLContext; }
 }

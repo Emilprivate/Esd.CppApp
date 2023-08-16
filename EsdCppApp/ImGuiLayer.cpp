@@ -6,6 +6,7 @@
 
 namespace EsdCppApp
 {
+    // Implementation of the constructor.
     ImGuiLayer::ImGuiLayer(SDL_Window* window, SDL_GLContext glContext)
             : m_Window(window), m_GLContext(glContext){
 
@@ -23,6 +24,7 @@ namespace EsdCppApp
         std::cout << "ImGuiLayer initialized" << std::endl;
     }
 
+    // Implementation of the destructor.
     ImGuiLayer::~ImGuiLayer()
     {
         ImGui_ImplOpenGL2_Shutdown();
@@ -30,6 +32,7 @@ namespace EsdCppApp
         ImGui::DestroyContext();
     }
 
+    // Manages the entire lifecycle of an ImGui frame.
     void ImGuiLayer::RunFrame(void(*userAppUI)(), bool& isActive)
     {
         ImGuiIO& io = ImGui::GetIO();
@@ -38,12 +41,14 @@ namespace EsdCppApp
         ImGui_ImplSDL2_NewFrame(m_Window);
         ImGui::NewFrame();
 
+        // Create a window that fills the entire viewport and pass all events to the underlying window.
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
         ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y), ImGuiCond_Always);
         ImGui::Begin("Background-Layer", &isActive, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
         ImGui::End();
 
+        // Call the user's UI code.
         userAppUI();
 
         ImGui::Render();
@@ -59,6 +64,7 @@ namespace EsdCppApp
         SDL_GL_SwapWindow(m_Window);
     }
 
+    // Handles the updating of window size in ImGui when the SDL window is resized.
     void ImGuiLayer::ResizeEvent() {
         ImGuiIO& io = ImGui::GetIO();
         int width, height;
