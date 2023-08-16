@@ -66,7 +66,7 @@ On Windows, OpenGL comes with graphics drivers.
 ## Step 1: Clone the Repository
 Clone the GitHub repository containing the EsdCppApp library:
 ```bash
-git clone <Your-GitHub-Repo-URL>
+git clone https://github.com/Emilprivate/Esd.CppApp.git
 ```
 
 ## Step 2: Include the EsdCppApp Library in Your Project
