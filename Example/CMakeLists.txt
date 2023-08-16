@@ -15,8 +15,11 @@ set(ImGui_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui")
 # Set the directories containing library binaries
 set(EsdCppApp_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/esdcppapp/lib")
 
+# Add ImGui sources directly to the application
+file(GLOB IMGUI_SOURCES "${ImGui_INCLUDE_DIR}/*.cpp")
+
 # Add the executable target
-add_executable(ExampleApp Example.cpp)
+add_executable(ExampleApp Example.cpp ${IMGUI_SOURCES})
 
 # Include directories for the example
 target_include_directories(ExampleApp PRIVATE
@@ -25,30 +28,34 @@ target_include_directories(ExampleApp PRIVATE
         ${OPENGL_INCLUDE_DIR}
         )
 
-# Link against the libraries
-target_link_libraries(ExampleApp PRIVATE
-        "${EsdCppApp_LIB_DIR}/libEsdCppApp.a"
-        SDL2::SDL2
-        OpenGL::GL
-        )
-
 # Check the operating system
-if(APPLE)
+if(WIN32)
+    message(STATUS "Running on Windows.")
+    link_directories(${EsdCppApp_LIB_DIR})
+    target_link_libraries(ExampleApp PRIVATE EsdCppApp SDL2::SDL2 OpenGL::GL)
+
+    # Windows specific flags and settings here
+    # Example: Copy DLLs to the output directory
+
+elseif(APPLE)
     message(STATUS "Running on macOS.")
+    target_link_libraries(ExampleApp PRIVATE
+            "${EsdCppApp_LIB_DIR}/libEsdCppApp.a"
+            SDL2::SDL2
+            OpenGL::GL
+            "-framework CoreVideo"
+            )
     # macOS specific flags and settings here
-    target_link_libraries(ExampleApp PRIVATE "-framework CoreVideo")
 
 elseif(UNIX AND NOT APPLE)
     message(STATUS "Running on a Unix-like system.")
+    target_link_libraries(ExampleApp PRIVATE
+            "${EsdCppApp_LIB_DIR}/libEsdCppApp.a"
+            SDL2::SDL2
+            OpenGL::GL
+            )
     # Linux/Unix specific flags and settings here
 
-elseif(WIN32)
-    message(STATUS "Running on Windows.")
-    # Windows specific flags and settings here
-    # Example: Copy DLLs to the output directory
-    # add_custom_command(TARGET ExampleApp POST_BUILD
-    #     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    #     "${SDL2_DLL_DIR}/SDL2.dll"
-    #     $<TARGET_FILE_DIR:ExampleApp>
-    # )
+else()
+    message(SEND_ERROR "You are on an unsupported platform!")
 endif()
