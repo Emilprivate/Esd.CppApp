@@ -38,109 +38,67 @@ int main(int, char**)
 }
 ```
 
-# How to Use the EsdCppApp Library
-## Prerequisites
-### Install Git:
-Install Git from https://git-scm.com/
+## Unix/Apple Dependency Installation
 
-### Install CMake:
-Install CMake from https://cmake.org/download/
+On Unix-like systems, you can usually install these dependencies using your package manager. For example, on Debian-based systems (including Ubuntu), run:
 
-### Install SDL2:
-#### macOS:
 ```bash
+sudo apt-get update
+sudo apt-get install libsdl2-dev libgl1-mesa-dev
+```
+On macOS, you can use Homebrew:
+```
+brew update
 brew install sdl2
 ```
-#### Windows:
-1. Download SDL2 from https://libsdl.org/download-2.0.php, place SDL2 in your C:\ folder or change the directory in the build.bat/generate files for a custom location.
 
-#### Linux:
+## Windows Dependency Installation
+On Windows, you'll need to manually configure the SDL2 and OpenGL dependencies through Visual Studio. The required files for these dependencies are already included in the Libs folder of the repository.
+
+SDL2 Setup: Follow [this guide](https://lazyfoo.net/tutorials/SDL/01_hello_SDL/windows/index.php) to set up SDL2 with Visual Studio.
+
+OpenGL Setup: OpenGL libraries are usually shipped with your graphics drivers, but you will need to link against these libraries in your Visual Studio project.
+
+## Building the Library on Unix/Apple
+To build the project on Unix-like systems, follow these steps:
+
+Clone this repository:
 ```bash
-sudo apt-get install libsdl2-dev
+git clone https://github.com/EmilPrivate/Esd.CppApp.git
 ```
-
-### Install OpenGL:
-This is usually pre-installed on macOS and Linux.
-On Windows, OpenGL comes with graphics drivers.
-
-## Step 1: Clone the Repository
-Clone the GitHub repository containing the EsdCppApp library:
+Navigate to the cloned repository directory:
 ```bash
-git clone https://github.com/Emilprivate/Esd.CppApp.git
+cd Esd.CppApp/EsdCppApp-Unix
 ```
-
-## Step 2: Include the EsdCppApp Library in Your Project
-Copy the EsdCppApp folder (which contains the includes and lib folders) into your project directory.
-
-### In your CMakeLists.txt file:
-Set the directories containing library headers:
-```
-set(EsdCppApp_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/EsdCppApp/includes")
-```
-
-Set the directories containing library binaries:
-```
-set(EsdCppApp_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/EsdCppApp/lib")
-```
-
-Include directories for your project:
-```
-target_include_directories(YourProjectName PRIVATE
-        ${EsdCppApp_INCLUDE_DIR}
-        ${OPENGL_INCLUDE_DIR}
-        )
-```
-
-Link against the libraries:
-```
-target_link_libraries(YourProjectName PRIVATE
-        "${EsdCppApp_LIB_DIR}/libEsdCppApp.a"
-        SDL2::SDL2
-        OpenGL::GL
-        )
-```
-
-## Step 3: Build Your Project
-### On macOS and Linux:
-Navigate to your project's directory and run:
+Run the build.sh script:
 ```bash
-mkdir build
-cd build
-cmake ..
+chmod +x Scripts/build.sh
+./Scripts/build.sh
+```
+To build the project, navigate to the 'build' directory and run:
+```bash
 make
 ```
-### On Windows:
-Use CMake GUI or command line to generate build files for your preferred compiler, then build your project with that compiler.
-
-## Step 4: Run the Example Project
-After building, you can run your project executable, which should be located in the build directory.
-
-## Step 5: Include the Library in Your Code
-In your .cpp files where you need to use the EsdCppApp library, include the header file:
-````
-#include "EsdCppApp.h"
-````
-And then you can use the classes and functions as demonstrated in the Example.cpp file in your repository.
-
-## To Build the Library:
-
-### On Unix (Linux, macOS, etc.):
-
-```sh
-./build_lib.sh
+To run the project, run:
+```bash
+./EsdCppAppExample
 ```
 
-### On Windows:
-````
-build_lib.bat
-````
+## Building the Library on Windows
+To build the project on Windows, follow these steps:
+```
+git clone https://github.com/EmilPrivate/Esd.CppApp.git
+```
+Navigate to the cloned repository directory.
+```
+cd Esd.CppApp/EsdCppApp-Windows
+```
+Run the build.bat script:
+```
+Scripts/build.bat
+```
+1) Open the generated Visual Studio solution file in the build directory.
 
-## To Generate IDE Project Files:
-### For Visual Studio (Windows):
-```
-generate_vs_project.bat
-```
-### For Unix Makefiles (Linux, macOS, etc.):
-```
-./generate_unix_project.sh
-```
+2) Build the EsdCppApp project. 
+
+*Note that there is no Example project for the Windows version due to complications that I have not yet resolved. The generated visual studio solution file is for the library itself (.lib).*
