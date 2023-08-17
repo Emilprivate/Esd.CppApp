@@ -81,7 +81,7 @@ make
 ```
 To run the project, run:
 ```bash
-./EsdCppAppExample
+./Example/EsdCppAppExample
 ```
 
 ## Building the Library on Windows

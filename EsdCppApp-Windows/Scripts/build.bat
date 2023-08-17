@@ -11,7 +11,7 @@ IF NOT EXIST build ( mkdir build )
 cd build
 
 :: Generate Visual Studio solution files
-cmake -G "Visual Studio 16 2019" ..
+cmake -G "Visual Studio 17 2022" ..
 
 echo To build the project, open the generated Visual Studio solution in the 'build' directory.
 pause

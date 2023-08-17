@@ -12,11 +12,10 @@ set(IMGUI_SOURCES
         Libs/imgui/imgui_tables.cpp
         )
 
-# Add the SDL2 library. This assumes that you have the SDL2
-# libraries and headers under EsdCppApp/Libs/sdl/
-set(SDL2_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Libs/sdl")
-list(APPEND CMAKE_MODULE_PATH ${SDL2_DIR})
+# Set the path to the SDL2 cmake configuration files
+set(SDL2_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Libs/sdl/cmake")
 
+# Find the SDL2 package
 find_package(SDL2 REQUIRED)
 
 # Create EsdCppApp library

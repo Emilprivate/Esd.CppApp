@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Set C++11 as the standard for the entire project
+# Set C++17 as the standard for the entire project
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
