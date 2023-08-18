@@ -13,5 +13,5 @@ cd build
 # Run CMake to generate the Makefiles
 cmake ..
 
-# Print message
-echo "To build the project, navigate to the 'build' directory and run 'make'."
+# Navigate to build folder and automatically run make
+cd ../build && make
