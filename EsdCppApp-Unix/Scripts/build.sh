@@ -13,5 +13,5 @@ cd build
 # Run CMake to generate the Makefiles
 cmake ..
 
-# Navigate to build folder and automatically run make
-cd ../build && make
+# Navigate to build folder, automatically run make and run the executable in the build/Example folder
+cd ../build && make && ./Example/EsdCppAppExample
