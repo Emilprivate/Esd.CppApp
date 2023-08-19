@@ -13,5 +13,5 @@ cd build
 # Run CMake to generate the Makefiles
 cmake ..
 
-# Print message
-echo "To build the project, navigate to the 'build' directory and run 'make'."
+# Navigate to build folder, automatically run make and run the executable in the build/Example folder
+cd ../build && make && ./Esd.ImguiStudio/Esd.ImguiStudio
