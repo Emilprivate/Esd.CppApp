@@ -38,6 +38,8 @@ int main(int, char**)
 }
 ```
 
+## *Note that EsdCppApp-Includes has the latest updates for the library*
+
 ## Unix/Apple Dependency Installation
 
 On Unix-like systems, you can usually install these dependencies using your package manager. For example, on Debian-based systems (including Ubuntu), run:

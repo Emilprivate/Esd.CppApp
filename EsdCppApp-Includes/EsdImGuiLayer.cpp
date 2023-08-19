@@ -52,6 +52,7 @@ namespace EsdCppApp
 
         ImGui::End();
 
+
         ImGui::Render();
 
         SDL_GL_MakeCurrent(m_Window, m_GLContext);
