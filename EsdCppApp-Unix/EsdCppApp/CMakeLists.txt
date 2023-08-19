@@ -10,6 +10,8 @@ set(IMGUI_SOURCES
         Libs/imgui/imgui_impl_sdl2.cpp
         Libs/imgui/imgui_impl_opengl2.cpp
         Libs/imgui/imgui_tables.cpp
+        Libs/imgui/TextEditor.cpp
+        Libs/imgui/ImGuiFileDialog.cpp
         )
 
 # Add the SDL2 library. This assumes that you have the SDL2
