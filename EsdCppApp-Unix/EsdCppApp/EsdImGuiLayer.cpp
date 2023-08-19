@@ -48,6 +48,7 @@ namespace EsdCppApp
         ImGuiID dockspace_id = ImGui::GetID("DefaultDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f));
 
+        // Call the user's application UI function.
         userAppUI();
 
         ImGui::End();
